@@ -1,3 +1,4 @@
+//Add a lot of npm packages just in case I might need them
 import { Buffer } from 'node:buffer';
 import * as fs from 'node:fs';
 import axios from 'axios';
@@ -7,18 +8,26 @@ import * as from from 'node-fetch';
 import path from 'path';
 import { getActiveResourcesInfo } from 'process';
 
+// make a fetch call to the meme website
 async function fetchData() {
   const url = await fetch(
     'https://memegen-link-examples-upleveled.netlify.app/',
   );
 
+  // make the url call a text file or string, not sure what it does
+  //create a new instance of JSDOM which enables us to have a DOM manipulation capabilities
+  // inside Nodejs
   const htmlText = await url.text();
   const dom = new JSDOM(htmlText);
 
   const document = dom.window.document;
 
+  // get all the img elemnts with a document like method + create an empty array to hold all the src as strings
+
   let imgs = document.getElementsByTagName('img');
   let imgSrcs = [];
+
+  //loop over the first 10 imgs variable and push the results to the empty array, and stop when it reaches to 10
 
   for (let i = 0; i < imgs.length; i++) {
     imgSrcs.push(imgs[i].src);
@@ -28,6 +37,10 @@ async function fetchData() {
     }
   }
 
+  // loop over the array with the url strings
+  // define the items as array buffer (whatever that means) and then get the response
+  // with the response use a method of fs. to save the files and name them with a 0 leading number to the right folder
+
   for (let z = 0; z < imgs.length; z++) {
     await axios
       .get(imgSrcs[z], { responseType: 'arraybuffer' })
@@ -36,8 +49,12 @@ async function fetchData() {
       });
   }
 
+  // print the array
+
   console.log(imgSrcs);
 }
+
+// call the fetch function so it is invoked and runs, otherwise it won't run.
 
 fetchData();
 /*
