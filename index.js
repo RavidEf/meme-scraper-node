@@ -12,13 +12,22 @@ async function fetchData() {
   const dom = new JSDOM(htmlText);
 
   const document = dom.window.document;
-  const getImg = document.querySelector('img');
+  /* const getImg = document.getElementsByTagName('img');
   const getSrc = getImg.getAttribute('src');
 
   const emptyArr = [];
-  emptyArr.push(getSrc);
+  emptyArr.push(getSrc); */
+  let imgs = document.getElementsByTagName('img');
+  let imgSrcs = [];
 
-  console.log(emptyArr);
+  for (let i = 0; i < imgs.length; i++) {
+    imgSrcs.push(imgs[i].src);
+    if (i > 9) {
+      break;
+    }
+  }
+
+  console.log(imgSrcs);
 }
 
 fetchData();
