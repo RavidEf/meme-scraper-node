@@ -5,29 +5,29 @@ import { getActiveResourcesInfo } from 'process';
 async function fetchData() {
   const url = await fetch(
     'https://memegen-link-examples-upleveled.netlify.app/',
-    //'https://quotes.toscrape.com/',
   );
 
   const htmlText = await url.text();
   const dom = new JSDOM(htmlText);
 
   const document = dom.window.document;
-  /* const getImg = document.getElementsByTagName('img');
-  const getSrc = getImg.getAttribute('src');
 
-  const emptyArr = [];
-  emptyArr.push(getSrc); */
   let imgs = document.getElementsByTagName('img');
   let imgSrcs = [];
 
   for (let i = 0; i < imgs.length; i++) {
     imgSrcs.push(imgs[i].src);
-    if (i > 9) {
+    if (i > 8) {
       break;
     }
   }
+  for (let x = 0; x < imgSrcs.length; x++) {
+    let blob = new Blob([imgSrcs[x]]);
+    let file = new File([blob], `0${x}.jpg`, { type: 'image/jpg' });
+    console.log(file);
+  }
 
-  console.log(imgSrcs);
+  console.log(imgSrcs[0]);
 }
 
 fetchData();
