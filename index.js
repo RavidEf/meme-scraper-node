@@ -1,5 +1,10 @@
+import { Buffer } from 'node:buffer';
+import * as fs from 'node:fs';
+import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { JSDOM } from 'jsdom';
+import * as from from 'node-fetch';
+import path from 'path';
 import { getActiveResourcesInfo } from 'process';
 
 async function fetchData() {
@@ -17,17 +22,21 @@ async function fetchData() {
 
   for (let i = 0; i < imgs.length; i++) {
     imgSrcs.push(imgs[i].src);
-    if (i > 8) {
+
+    if (i > 9) {
       break;
     }
   }
-  for (let x = 0; x < imgSrcs.length; x++) {
-    let blob = new Blob([imgSrcs[x]]);
-    let file = new File([blob], `0${x}.jpg`, { type: 'image/jpg' });
-    console.log(file);
+
+  for (let z = 0; z < imgs.length; z++) {
+    await axios
+      .get(imgSrcs[z], { responseType: 'arraybuffer' })
+      .then((response) => {
+        fs.writeFileSync(`meme-folder/0${[z]}.jpg`, response.data);
+      });
   }
 
-  console.log(imgSrcs[0]);
+  console.log(imgSrcs);
 }
 
 fetchData();
@@ -64,3 +73,26 @@ const element = $('nav'); */
 JSDOM.fromURL(
   'https://memegen-link-examples-upleveled.netlify.app/',
 ); */
+
+/* for (let x = 0; x < imgSrcs.length; x++) {
+  let blob = new Blob([imgSrcs[x]]);
+  let file = new File([blob], `0${x}.jpg`, { type: 'image/jpg' });  */
+/*
+  const JSONToFile = (obj, filename) =>
+    writeFileSync(`${file}.json`, JSON.stringify(obj, null, 2));
+
+  fs.writeFile('/meme-folder', file, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      // file written successfully
+    }
+  }); */
+
+/*  fs.writeFile('./meme-folder', file, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      // file written successfully
+    }
+  }); */
