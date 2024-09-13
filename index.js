@@ -1,12 +1,7 @@
-//Add a lot of npm packages just in case I might need them
-import { Buffer } from 'node:buffer';
+// Add a lot of npm packages just in case I might need them
 import * as fs from 'node:fs';
 import axios from 'axios';
-import * as cheerio from 'cheerio';
 import { JSDOM } from 'jsdom';
-import * as from from 'node-fetch';
-import path from 'path';
-import { getActiveResourcesInfo } from 'process';
 
 // make a fetch call to the meme website
 async function fetchData() {
@@ -15,7 +10,7 @@ async function fetchData() {
   );
 
   // make the url call a text file or string, not sure what it does
-  //create a new instance of JSDOM which enables us to have a DOM manipulation capabilities
+  // create a new instance of JSDOM which enables us to have a DOM manipulation capabilities
   // inside Nodejs
   const htmlText = await url.text();
   const dom = new JSDOM(htmlText);
@@ -24,39 +19,37 @@ async function fetchData() {
 
   // get all the img elemnts with a document like method + create an empty array to hold all the src as strings
 
-  let imgs = document.getElementsByTagName('img');
-  let imgSrcs = [];
+  const imgs = document.getElementsByTagName('img');
+  const imgSrcs = [];
 
-  //loop over the first 10 imgs variable and push the results to the empty array, and stop when it reaches to 10
+  // loop over the first 10 imgs variable and push the results to the empty array, and stop when it reaches to 10
 
-  for (let i = 0; i < imgs.length; i++) {
+  for (let i = 0; i < imgs.length && i < 10; i++) {
     imgSrcs.push(imgs[i].src);
-
-    if (i > 9) {
-      break;
-    }
   }
 
   // loop over the array with the url strings
   // define the items as array buffer (whatever that means) and then get the response
   // with the response use a method of fs. to save the files and name them with a 0 leading number to the right folder
 
-  for (let z = 0; z < imgs.length; z++) {
-    await axios
-      .get(imgSrcs[z], { responseType: 'arraybuffer' })
-      .then((response) => {
-        fs.writeFileSync(`meme-folder/0${[z]}.jpg`, response.data);
-      });
+  for (let z = 0; z < imgs.length && z < 10; z++) {
+    try {
+      await axios
+        .get(imgSrcs[z], { responseType: 'arraybuffer' })
+        .then((response) => {
+          fs.writeFileSync(`meme-folder/0${z + 1}.jpg`, response.data);
+        });
+    } catch (error) {
+      console.error(`This url has an issue: ${imgSrcs[z]}:`, error);
+    }
+    // print the array
+    // console.log(imgSrcs);
   }
-
-  // print the array
-
-  console.log(imgSrcs);
 }
 
 // call the fetch function so it is invoked and runs, otherwise it won't run.
 
-fetchData();
+await fetchData();
 /*
   const document = url.window.document;
 
