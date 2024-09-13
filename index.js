@@ -37,7 +37,7 @@ async function fetchData() {
       await axios
         .get(imgSrcs[z], { responseType: 'arraybuffer' })
         .then((response) => {
-          fs.writeFileSync(`meme-folder/0${z + 1}.jpg`, response.data);
+          fs.writeFileSync(`memes/0${z + 1}.jpg`, response.data);
         });
     } catch (error) {
       console.error(`This url has an issue: ${imgSrcs[z]}:`, error);
