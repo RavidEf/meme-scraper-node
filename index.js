@@ -32,6 +32,15 @@ async function fetchData() {
   // define the items as array buffer (whatever that means) and then get the response
   // with the response use a method of fs. to save the files and name them with a 0 leading number to the right folder
 
+  const folderName = 'memes';
+  try {
+    if (!fs.existsSync(folderName)) {
+      fs.mkdirSync(folderName);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
   for (let z = 0; z < imgs.length && z < 10; z++) {
     try {
       await axios
