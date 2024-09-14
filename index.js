@@ -14,7 +14,6 @@ async function fetchData() {
   // inside Nodejs
   const htmlText = await url.text();
   const dom = new JSDOM(htmlText);
-
   const document = dom.window.document;
 
   // get all the img elemnts with a document like method + create an empty array to hold all the src as strings
@@ -51,8 +50,6 @@ async function fetchData() {
     } catch (error) {
       console.error(`This url has an issue: ${imgSrcs[z]}:`, error);
     }
-    // print the array
-    // console.log(imgSrcs);
   }
 }
 
