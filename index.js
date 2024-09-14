@@ -23,7 +23,7 @@ async function fetchData() {
 
   // loop over the first 10 imgs variable and push the results to the empty array, and stop when it reaches to 10
 
-  for (let i = 0; i < imgs.length && i < 10; i++) {
+  for (let i = 0; i < imgs.length && i <= 10; i++) {
     imgSrcs.push(imgs[i].src);
   }
 
